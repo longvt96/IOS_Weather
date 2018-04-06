@@ -10,9 +10,21 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    private let placeRepository: PlaceRepositories = PlaceRepositoriesImp(api: APIService.share)
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        placeRepository.getweather(lat: 37.8267, lot: -122.4233) { (result) in
+            switch result {
+            case .success(let weatherResponse):
+                if let weatherdemo = weatherResponse {
+                   let place = weatherdemo.place
+                    print("place: \(place!.time!) \(String(describing: place!.summary!))")
+                }
+            case .failure(let error):
+                print("\(String(describing: error))")
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
