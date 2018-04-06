@@ -10,6 +10,7 @@ target 'IOS_Weather' do
   pod 'GoogleMaps'
   pod 'SwiftLint'
   pod 'AlamofireObjectMapper', '~> 5.0'
+  pod 'NVActivityIndicatorView'
   # Pods for IOS_Weather
 
 end

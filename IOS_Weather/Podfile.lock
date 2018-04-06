@@ -10,6 +10,9 @@ PODS:
     - GoogleMaps/Base
   - GooglePlaces (2.6.0):
     - GoogleMaps/Base (= 2.6.0)
+  - NVActivityIndicatorView (4.1.1):
+    - NVActivityIndicatorView/Presenter (= 4.1.1)
+  - NVActivityIndicatorView/Presenter (4.1.1)
   - ObjectMapper (3.1.0)
   - SwiftLint (0.25.0)
   - SwiftyJSON (4.0.0)
@@ -19,6 +22,7 @@ DEPENDENCIES:
   - AlamofireObjectMapper (~> 5.0)
   - GoogleMaps
   - GooglePlaces
+  - NVActivityIndicatorView
   - SwiftLint
   - SwiftyJSON
 
@@ -27,10 +31,11 @@ SPEC CHECKSUMS:
   AlamofireObjectMapper: 5fafc816351cbbc0d486611aaeba7461c0cbad49
   GoogleMaps: 42f91c68b7fa2f84d5c86597b18ceb99f5414c7f
   GooglePlaces: f6ddf33b75cef69e888907d9947c57198ed845f3
+  NVActivityIndicatorView: 60109b9bf46efc2e71ab81453196ccdfdfeea870
   ObjectMapper: 20505058f54e5c3ca69e1d6de9897d152a5369a6
   SwiftLint: e14651157288e9e01d6e1a71db7014fb5744a8ea
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
 
-PODFILE CHECKSUM: 55f52962456e8d19a094449892b93085263253cb
+PODFILE CHECKSUM: 206fbe1d3e3b5974b3270b3c722fb2d2c6e9a96d
 
 COCOAPODS: 1.4.0
