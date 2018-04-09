@@ -14,10 +14,11 @@ class Place: BaseModel {
     var time: Double?
     var summary: String?
     var icon: String?
-    var temperature: Float?
-    var humidity: Float?
-    var windSpeed: Float?
-    var cloudCover: Float?
+    var temperature: CGFloat?
+    var humidity: CGFloat?
+    var windSpeed: CGFloat?
+    var cloudCover: CGFloat?
+    var ozone: CGFloat?
 
     required init?(map: Map) {
         mapping(map: map)
@@ -27,9 +28,10 @@ class Place: BaseModel {
         time <- map["time"]
         summary <- map["summary"]
         icon <- map["icon"]
-        temperature <- map["precipProbability"]
+        temperature <- map["temperature"]
         humidity <- map["humidity"]
         windSpeed <- map["windSpeed"]
         cloudCover <- map["cloudCover"]
+        ozone <- map["ozone"]
     }
 }

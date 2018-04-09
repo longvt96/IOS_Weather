@@ -24,8 +24,8 @@ class BaseClassViewController: UIViewController, NVActivityIndicatorViewable {
     func showLoadingOnParent() {
         let size = CGSize(width: 30, height: 30)
         startAnimating(size, message: "", messageFont: nil,
-                       type: NVActivityIndicatorType(rawValue: 16)!,
-                       color: UIColor.red, padding: 0, displayTimeThreshold: 0,
+                       type: NVActivityIndicatorType(rawValue: 23)!,
+                       color: UIColor.brown, padding: 0, displayTimeThreshold: 0,
                        minimumDisplayTime: 0,
                        backgroundColor: .clear, textColor: UIColor.red)
     }
