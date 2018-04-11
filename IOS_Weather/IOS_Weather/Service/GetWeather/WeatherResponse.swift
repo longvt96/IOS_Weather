@@ -15,6 +15,7 @@ class WeatherResponse: Mappable {
     var hourly: [Place]?
     var daily: [DayWeather]?
     var day: Daily?
+    var timezone: String?
 
     required init?(map: Map) {
         mapping(map: map)
@@ -30,5 +31,6 @@ class WeatherResponse: Mappable {
         if let day = day {
             self.daily = day.data
         }
+        timezone <- map["timezone"]
     }
 }

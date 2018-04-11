@@ -10,10 +10,10 @@ import UIKit
 import ObjectMapper
 
 class DayWeather: BaseModel {
-    var time: Int?
+    var time: Double?
     var icon: String?
-    var maxTemperature: Int?
-    var minTemperature: Int?
+    var maxTemperature: CGFloat?
+    var minTemperature: CGFloat?
 
     required init?(map: Map) {
         self.mapping(map: map)
