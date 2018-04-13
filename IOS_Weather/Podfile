@@ -11,6 +11,7 @@ target 'IOS_Weather' do
   pod 'SwiftLint'
   pod 'AlamofireObjectMapper', '~> 5.0'
   pod 'NVActivityIndicatorView'
+  pod 'FMDB'
   # Pods for IOS_Weather
 
 end

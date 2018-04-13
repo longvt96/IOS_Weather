@@ -14,7 +14,7 @@
         <!--Page View Controller-->
         <scene sceneID="eZ7-zh-R3h">
             <objects>
-                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="6Di-4j-DLh" customClass="PageViewController" customModule="IOS_Weather" customModuleProvider="target" sceneMemberID="viewController">
+                <pageViewController storyboardIdentifier="pageVC" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="6Di-4j-DLh" customClass="PageViewController" customModule="IOS_Weather" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="WiM-AN-gem"/>
                 </pageViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sEd-sI-bTU" userLabel="First Responder" sceneMemberID="firstResponder"/>

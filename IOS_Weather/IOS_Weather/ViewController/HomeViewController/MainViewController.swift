@@ -75,35 +75,40 @@ class MainViewController: BaseClassViewController, UIScrollViewDelegate, AlertVi
         if showloading {
             self.showLoadingOnParent()
         }
-        placeRepository.getweather(lat: 21.023862, lot: 105.783554) { (result) in
-            switch result {
-            case .success(let weatherResponse):
-                if let weatherDemo = weatherResponse {
-                    let place = weatherDemo.place
-                    self.currentPlace = place
-                    self.setData()
-                    if let tmpDayData = weatherDemo.daily, let tmpHourData = weatherDemo.hourly {
-                        self.dataDayArray = tmpDayData
-                        self.dataHourArray = tmpHourData
-                        self.dayWeatherTableView.reloadData()
-                        self.hourWeatherCollectionView.reloadData()
-                        self.timeZonePlace = weatherDemo.timezone
-                    } else {
-                        self.showAlertView(title: "Error", message: "Data nil!",
-                                           cancelButton: "OK", otherButtons: nil, type: UIAlertControllerStyle.alert,
-                                           cancelAction: nil, otherAction: nil)
+        if let tmpLatitudePlace = self.latitudePlace,
+            let tmpLongitudePlace = self.longitudePlace {
+            placeRepository.getweather(lat: tmpLatitudePlace, lot: tmpLongitudePlace) { (result) in
+                switch result {
+                case .success(let weatherResponse):
+                    if let weatherDemo = weatherResponse {
+                        let place = weatherDemo.place
+                        self.currentPlace = place
+                        self.setData()
+                        if let tmpDayData = weatherDemo.daily,
+                            let tmpHourData = weatherDemo.hourly {
+                            self.dataDayArray = tmpDayData
+                            self.dataHourArray = tmpHourData
+                            self.dayWeatherTableView.reloadData()
+                            self.hourWeatherCollectionView.reloadData()
+                            self.timeZonePlace = weatherDemo.timezone
+                        } else {
+                            self.showAlertView(title: "Error", message: "Data nil!",
+                                               cancelButton: "OK", otherButtons: nil,
+                                               type: UIAlertControllerStyle.alert,
+                                               cancelAction: nil, otherAction: nil)
+                        }
                     }
-                }
-                if showloading {
-                    self.hidenLoading()
-                }
-            case .failure(let error):
-                self.showAlertView(title: "Error",
-                                   message: "Error load API: \n \(String(describing: error?.errorMessage!))",
-                    cancelButton: "OK", otherButtons: nil,
-                    type: UIAlertControllerStyle.alert, cancelAction: nil, otherAction: nil)
-                if showloading {
-                    self.hidenLoading()
+                    if showloading {
+                        self.hidenLoading()
+                    }
+                case .failure(let error):
+                    self.showAlertView(title: "Error",
+                                       message: "Error load API: \n \(String(describing: error?.errorMessage!))",
+                        cancelButton: "OK", otherButtons: nil,
+                        type: UIAlertControllerStyle.alert, cancelAction: nil, otherAction: nil)
+                    if showloading {
+                        self.hidenLoading()
+                    }
                 }
             }
         }
@@ -114,7 +119,9 @@ class MainViewController: BaseClassViewController, UIScrollViewDelegate, AlertVi
             let tmpOzone = self.currentPlace?.ozone,
             let tmpCloudCover = self.currentPlace?.cloudCover,
             let tmpWindSpeed = self.currentPlace?.windSpeed,
-            let tmpHumidity = self.currentPlace?.humidity {
+            let tmpHumidity = self.currentPlace?.humidity,
+            let tmpNamePlace = self.namePlace {
+            self.namePlaceLabel.text = tmpNamePlace
             if self.changeTemperatureSegment.selectedSegmentIndex == 1 {
                 self.temperatureLabel.text = String(describing: Int((tmpTemperature))) + Constant.kSymbolTemp
             } else {
