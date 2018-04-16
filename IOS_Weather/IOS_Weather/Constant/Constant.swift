@@ -23,4 +23,5 @@ class Constant {
     static let kSymbolPercen = "%"
     static let kIdentifierCell = "cellDayWeather"
     static let kIdentifierItem = "itemHourWeather"
+    static let KDatabaseName = "PlaceDatabase"
 }
