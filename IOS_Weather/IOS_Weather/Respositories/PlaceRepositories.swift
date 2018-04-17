@@ -10,7 +10,7 @@ import Foundation
 import ObjectMapper
 
 protocol PlaceRepositories {
-    func getweather(lat: Float, lot: Float, completion: @escaping (BaseResult<WeatherResponse>) -> Void)
+    func getWeather(latitude: Float, longitude: Float, completion: @escaping (BaseResult<WeatherResponse>) -> Void)
 }
 
 class PlaceRepositoriesImp: PlaceRepositories {
@@ -21,8 +21,8 @@ class PlaceRepositoriesImp: PlaceRepositories {
         self.api = api
     }
 
-    func getweather(lat: Float, lot: Float, completion: @escaping (BaseResult<WeatherResponse>) -> Void) {
-        let input = WeatherRequest(lat: lat, lot: lot)
+    func getWeather(latitude: Float, longitude: Float, completion: @escaping (BaseResult<WeatherResponse>) -> Void) {
+        let input = WeatherRequest(lat: latitude, lot: longitude)
         api?.request(input: input) { (object: WeatherResponse?, error) in
             if let object = object {
                 completion(.success(object))

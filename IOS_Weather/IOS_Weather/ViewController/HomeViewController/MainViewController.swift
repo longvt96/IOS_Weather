@@ -51,6 +51,7 @@ class MainViewController: BaseClassViewController, UIScrollViewDelegate, AlertVi
         Timer.scheduledTimer(withTimeInterval: TimeInterval(Constant.kTimeAutoReloadData), repeats: true) { (_) in
             self.loadData(false)
         }
+        UserDefaults.standard.set(0, forKey: Constant.kChangeTemperatureKey)
     }
 
     func setRefreshControl() {
@@ -72,48 +73,55 @@ class MainViewController: BaseClassViewController, UIScrollViewDelegate, AlertVi
     }
 
     func loadData(_ showloading: Bool) {
+        print("reload")
         if showloading {
             self.showLoadingOnParent()
         }
         if let tmpLatitudePlace = self.latitudePlace,
             let tmpLongitudePlace = self.longitudePlace {
-            placeRepository.getweather(lat: tmpLatitudePlace, lot: tmpLongitudePlace) { (result) in
+            placeRepository.getWeather(latitude: tmpLatitudePlace, longitude: tmpLongitudePlace) { (result) in
                 switch result {
                 case .success(let weatherResponse):
-                    if let weatherDemo = weatherResponse {
-                        let place = weatherDemo.place
-                        self.currentPlace = place
-                        self.setData()
-                        if let tmpDayData = weatherDemo.daily,
-                            let tmpHourData = weatherDemo.hourly {
-                            self.dataDayArray = tmpDayData
-                            self.dataHourArray = tmpHourData
-                            self.dayWeatherTableView.reloadData()
-                            self.hourWeatherCollectionView.reloadData()
-                            self.timeZonePlace = weatherDemo.timezone
-                        } else {
-                            self.showAlertView(title: "Error", message: "Data nil!",
-                                               cancelButton: "OK", otherButtons: nil,
-                                               type: UIAlertControllerStyle.alert,
-                                               cancelAction: nil, otherAction: nil)
-                        }
-                    }
-                    if showloading {
-                        self.hidenLoading()
-                    }
+                    self.successGetDataApi(weatherResponse: weatherResponse, showloading: showloading)
                 case .failure(let error):
-                    self.showAlertView(title: "Error",
-                                       message: "Error load API: \n \(String(describing: error?.errorMessage!))",
-                        cancelButton: "OK", otherButtons: nil,
-                        type: UIAlertControllerStyle.alert, cancelAction: nil, otherAction: nil)
-                    if showloading {
-                        self.hidenLoading()
-                    }
+                    self.failureGetDataFromApi(error: error, showloading: showloading)
                 }
             }
         }
     }
 
+    func failureGetDataFromApi(error: BaseError?, showloading: Bool) {
+        self.showAlertView(title: "Error",
+                           message: "Error load API: \n \(String(describing: error?.errorMessage!))",
+            cancelButton: "OK", otherButtons: nil,
+            type: UIAlertControllerStyle.alert, cancelAction: nil, otherAction: nil)
+        if showloading {
+            self.hidenLoading()
+        }
+    }
+    func successGetDataApi(weatherResponse: WeatherResponse?, showloading: Bool) {
+        if let weatherDemo = weatherResponse {
+            let place = weatherDemo.place
+            self.currentPlace = place
+            self.setData()
+            if let tmpDayData = weatherDemo.daily,
+                let tmpHourData = weatherDemo.hourly {
+                self.dataDayArray = tmpDayData
+                self.dataHourArray = tmpHourData
+                self.dayWeatherTableView.reloadData()
+                self.hourWeatherCollectionView.reloadData()
+                self.timeZonePlace = weatherDemo.timezone
+            } else {
+                self.showAlertView(title: "Error", message: "Data nil!",
+                                   cancelButton: "OK", otherButtons: nil,
+                                   type: UIAlertControllerStyle.alert,
+                                   cancelAction: nil, otherAction: nil)
+            }
+        }
+        if showloading {
+            self.hidenLoading()
+        }
+    }
     func setData() {
         if let tmpTemperature = self.currentPlace?.temperature,
             let tmpOzone = self.currentPlace?.ozone,
@@ -142,15 +150,20 @@ class MainViewController: BaseClassViewController, UIScrollViewDelegate, AlertVi
         }
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     @IBAction func changeTemperatureSegment(_ sender: Any) {
         self.dayWeatherTableView.reloadData()
         self.hourWeatherCollectionView.reloadData()
         self.setData()
+        UserDefaults.standard.set(self.changeTemperatureSegment.selectedSegmentIndex,
+                                  forKey: Constant.kChangeTemperatureKey)
+    }
+
+    @IBAction func goHistoryViewControllerButton(_ sender: Any) {
+        let historyViewController = self.storyboard?.instantiateViewController(
+            withIdentifier: Constant.kIdentifierHistoryViewController)
+        if let tmpHistoryViewController = historyViewController {
+            self.navigationController?.pushViewController(tmpHistoryViewController, animated: true)
+        }
     }
 
     @IBAction func changeWindSegment(_ sender: Any) {
