@@ -107,6 +107,7 @@ extension HistoryPlaceViewController: GMSAutocompleteViewControllerDelegate {
 
     func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
         self.showAlertWhenAddNewPlaceFailed()
+        dismiss(animated: true, completion: nil)
     }
 
     func wasCancelled(_ viewController: GMSAutocompleteViewController) {
