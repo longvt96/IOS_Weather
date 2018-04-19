@@ -55,7 +55,7 @@ class PageViewController: UIPageViewController {
         let windowView = appDelegate?.window
         if let tmpWindowView = windowView {
             UIView.transition(with: tmpWindowView, duration: 1.5,
-                              options: UIViewAnimationOptions.transitionCrossDissolve, animations: {
+                              options: UIViewAnimationOptions.transitionCurlUp, animations: {
                                 tmpWindowView.rootViewController = self.storyboard?
                                 .instantiateViewController(
                                     withIdentifier: Constant.kIdentifierNavigationController)
