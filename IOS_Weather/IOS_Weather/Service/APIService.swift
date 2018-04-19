@@ -21,6 +21,7 @@ struct APIService {
         config.timeoutIntervalForRequest = 30
         config.timeoutIntervalForResource = 30
         alamofireManager = Alamofire.SessionManager(configuration: config)
+        UserDefaults.standard.set(0, forKey: "key")
         alamofireManager.adapter = CustomRequestAdapter()
     }
 
