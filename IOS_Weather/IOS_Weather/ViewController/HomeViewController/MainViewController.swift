@@ -73,7 +73,6 @@ class MainViewController: BaseClassViewController, UIScrollViewDelegate, AlertVi
     }
 
     func loadData(_ showloading: Bool) {
-        print("reload")
         if showloading {
             self.showLoadingOnParent()
         }

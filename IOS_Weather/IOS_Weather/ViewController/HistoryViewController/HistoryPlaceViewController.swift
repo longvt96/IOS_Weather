@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import GooglePlaces
 
 class HistoryPlaceViewController: BaseClassViewController, AlertViewController, UIScrollViewDelegate {
 
@@ -22,19 +23,32 @@ class HistoryPlaceViewController: BaseClassViewController, AlertViewController, 
         initNavigation()
         loadPlaceFromHistory()
         initRefeshControl()
+        autoReloadDataEachMinute()
+    }
+
+    func autoReloadDataEachMinute() {
+        Timer.scheduledTimer(withTimeInterval: TimeInterval(Constant.kTimeAutuReloadHistory), repeats: true) { (_) in
+            self.reloadData()
+        }
     }
 
     func initNavigation() {
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         let addBarButton = UIBarButtonItem.init(title: "ADD",
                                                 style: UIBarButtonItemStyle.done, target: self,
-                                                action: nil)
+                                                action: #selector(addNewPlace))
         self.navigationItem.rightBarButtonItems = [addBarButton]
         let  backBarButton = UIBarButtonItem.init(title: "BACK",
                                                 style: UIBarButtonItemStyle.done, target: self,
                                                 action: #selector(clickBarButtonBack))
         self.navigationItem.leftBarButtonItems = [backBarButton]
         self.navigationItem.setHidesBackButton(true, animated: false)
+    }
+
+    @objc func addNewPlace() {
+        let autoCompleteController = GMSAutocompleteViewController()
+        autoCompleteController.delegate = self
+        present(autoCompleteController, animated: true, completion: nil)
     }
 
     @objc func clickBarButtonBack() {
@@ -60,10 +74,6 @@ class HistoryPlaceViewController: BaseClassViewController, AlertViewController, 
         self.refreshControl.endRefreshing()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-
     func loadPlaceFromHistory() {
         dataPlace = HandlingWeatherDatabase.fetchWeather()
     }
@@ -71,6 +81,36 @@ class HistoryPlaceViewController: BaseClassViewController, AlertViewController, 
     func reloadData() {
         loadPlaceFromHistory()
         self.historyPlaceTableView.reloadData()
+    }
+
+    func showAlertWhenAddNewPlaceFailed() {
+        self.showAlertView(title: "Error", message: "Không thêm được địa điểm mới này !",
+                           cancelButton: "OK", otherButtons: nil, type: UIAlertControllerStyle.alert,
+                           cancelAction: nil, otherAction: nil)
+    }
+}
+
+extension HistoryPlaceViewController: GMSAutocompleteViewControllerDelegate {
+
+    func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
+        let newPlace = PlaceDataBase(namePlace: place.name,
+                                     latitudePlace: Float(place.coordinate.latitude),
+                                     longitudePlace: Float(place.coordinate.longitude))
+        guard HandlingWeatherDatabase.insertWeather(place: newPlace) else {
+            dismiss(animated: true, completion: nil)
+            self.showAlertWhenAddNewPlaceFailed()
+            return
+        }
+        self.reloadData()
+        dismiss(animated: true, completion: nil)
+    }
+
+    func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
+        self.showAlertWhenAddNewPlaceFailed()
+    }
+
+    func wasCancelled(_ viewController: GMSAutocompleteViewController) {
+        dismiss(animated: true, completion: nil)
     }
 }
 

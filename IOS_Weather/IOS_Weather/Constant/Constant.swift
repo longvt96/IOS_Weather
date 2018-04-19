@@ -11,6 +11,7 @@ import Foundation
 class Constant {
     static let kAnimationDuration = 0.3
     static let kTimeAutoReloadData = 300
+    static let kTimeAutuReloadHistory = 60
     static let kDayOfWeek = 7
     static let kHourWeather = 24
     static let kCountItem = 6
